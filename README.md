@@ -4,8 +4,6 @@ This is a simple golang CLI to enable users to easily start AWS Systems Manager
 Sessions from the terminal, without having to remember the command themselves 
 or list instance IDs.
 
-For list of changes/release, see CHANGELOG.md
-
 ## Dependencies
 
 At the moment, this tool requires both the [AWS CLI](https://aws.amazon.com/cli/) and the [Session Manager Plugin](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html).
@@ -21,53 +19,38 @@ Session Manager needs to be working for this script to work, it's just a wrapper
 If you've no profile or variables or token, you'll get this:
 
     $ ssmcli
-    ERRO[0005] failed to list sessions                       error="NoCredentialProviders: no valid providers in chain. Deprecated.\n\tFor verbose messaging see aws.Config.CredentialsChainVerboseErrors"
-    ERRO[0005] no credentials provider found, do you need to set AWS_* variables?
-    ERRO[0005] no instances found
+    ERRO[0004] aws error                                     code=AuthFailure message="AWS was not able to validate the provided access credentials"
 
 With variables set, you'll get a list of instances that Session Manager knows about:
 
-    DEBU[0000] instance found                                id=i-078               name=jenkins
-    DEBU[0000] instance found                                id=i-040               name=centos.7
-    DEBU[0000] map[ec2.centos.7:i-040               jenkins:i-078              ]
     Use the arrow keys to navigate: ↓ ↑ → ←
     ? Select instance:
       ▸ ec2.jenkins
         ec2.centos.7
 
+Upon selecting an instance, you will get the option to choose your region:
+
+    Use the arrow keys to navigate: ↓ ↑ → ←
+    ? AWS Region:
+      ▸ us-west-1
+        us-west-2
+        us-east-1
+        us-east-2
+
 When you select one, you get the option to start a shell, or forward ports:
 
-    DEBU[0000] instance found                                id=i-078               name=ec2.jenkins
-    DEBU[0000] instance found                                id=i-040               name=ec2.centos.7
-    DEBU[0000] map[ec2.centos.7:i-040               ec2.jenkins:i-078              ]
-    ✔ ec2.jenkins
-    DEBU[0135] selected instance                             id=i-078               name=ec2.jenkins
     Use the arrow keys to navigate: ↓ ↑ → ←
     ? Select action:
       ▸ start SSH
         forward ports
 
 If you then select SSH, you get a session:
-
-    DEBU[0000] instance found                                id=i-078               name=ec2.jenkins
-    DEBU[0000] instance found                                id=i-040               name=ec2.centos.7
-    DEBU[0000] map[ec2.centos.7:i-040               ec2.jenkins:i-078              ]
-    ✔ ec2.jenkins
-    DEBU[0135] selected instance                             id=i-078               name=ec2.jenkins
-    ✔ start SSH
-    DEBU[0170] selected Action                               action="start SSH"
-    INFO[0170] starting SSH shell
     
     Starting session with SessionId: 0a0              
     sh-4.2$
 
 If you want to forward ports, then you get the following:
 
-    DEBU[0000] instance found                                id=i-078               name=ec2.jenkins
-    DEBU[0000] instance found                                id=i-040               name=ec2.centos.7
-    DEBU[0000] map[ec2.centos.7:i-040               ec2.jenkins:i-078              ]
-    ✔ ec2.jenkins
-    DEBU[0001] selected instance                             id=i-078               name=ec2.jenkins
     ✔ forward ports
     DEBU[0002] selected Action                               action="forward ports"
     Use the arrow keys to navigate: ↓ ↑ → ←
@@ -77,18 +60,7 @@ If you want to forward ports, then you get the following:
         443
         8080
 
-(TODO?) And then selecting the port runs the script:
-
-    DEBU[0000] instance found                                id=i-078               name=ec2.jenkins
-    DEBU[0000] instance found                                id=i-040               name=ec2.centos.7
-    DEBU[0000] map[ec2.centos.7:i-040               ec2.jenkins:i-078              ]
-    ✔ ec2.jenkins
-    DEBU[0001] selected instance                             id=i-078               name=ec2.jenkins
-    ✔ forward ports
-    DEBU[0002] selected Action                               action="forward ports"
-    ✔ 8080
-    DEBU[0022] selected port                                 port=8080
-    INFO[0022] run port forwarding                           port=8080
+(TODO) And then selecting the port runs the script:
 
 ## Building
 
