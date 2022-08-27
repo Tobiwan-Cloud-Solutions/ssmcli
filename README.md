@@ -1,3 +1,5 @@
+![TWSLogo](https://github.com/Tobiwan-Cloud-Solutions/images/blob/main/TWSBannerGHLogo.png)
+
 # SSM-CLI #
 
 This is a simple golang CLI to enable users to easily start AWS Systems Manager 
